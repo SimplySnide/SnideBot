@@ -1,0 +1,140 @@
+{
+    "InsightTerminus":  
+    {
+        "name": "The Insight Terminus",
+        "commandname": ["insightterminus","theinsightterminus","insight","it"],
+        "champions":["Anti-Barrier <:AntiBarrier:819343119103426611>","Unstoppable <:Unstoppable:819343119425601556>"],
+        "shields":["Void <:Void:819343119455748136> (Uncommon)","Solar <:Solar:819343119391653918> (Rare)"],
+        "hashIdentifier": "3029388704",
+        "KeptModifiers": [0,1,2,12]
+    },
+
+    "DevilsLair":  
+    {
+        "name": "The Devils Lair",
+        "commandname": ["devilslair","thedevilslair","dl"],
+        "champions":["Overload <:Overload:819343119451422720>", "Anti-Barrier <:AntiBarrier:819343119103426611>"],
+        "shields":["Solar <:Solar:819343119391653918> (Common)", "Arc <:Arc:819343119384182814> (Common)","Void <:Void:819343119455748136> (Common)"],
+        "hashIdentifier": "1203950592",
+        "KeptModifiers": [0,1,2,12]
+
+    },
+    "LakeOfShadows":  
+    {
+        "name": "Lake of Shadows",
+        "commandname": ["lakeofshadows","thelakeofshadows","los"],
+        "champions":["Overload <:Overload:819343119451422720>", "Unstoppable <:Unstoppable:819343119425601556>"],
+        "shields":["Solar <:Solar:819343119391653918> (Common)", "Arc <:Arc:819343119384182814> (Uncommon)", "Void <:Void:819343119455748136> (Rare)" ],
+        "hashIdentifier": "3109193568",
+        "KeptModifiers": [0,1,2,12]
+        
+    },
+    "ArmsDealer":  
+    {
+        "name": "The Arms Dealer",        
+        "commandname": ["armsdealer","thearmsdealer","ad"],
+        "champions":["Unstoppable <:Unstoppable:819343119425601556>", "Anti-Barrier <:AntiBarrier:819343119103426611>"],
+        "shields":["Void <:Void:819343119455748136> (Common)", "Solar <:Solar:819343119391653918> (Rare)"],
+        "hashIdentifier": "1753547901",
+        "KeptModifiers": [0,1,2,12]
+    },
+    "ExodusCrash":  
+    {
+        "name": "Exodus Crash",
+        "commandname": ["exoduscrash","ec"],
+        "champions":["Overload <:Overload:819343119451422720>", "Anti-Barrier <:AntiBarrier:819343119103426611>"],
+        "shields":["Solar <:Solar:819343119391653918> (Rare)"],
+        "hashIdentifier": "3233498454",
+        "KeptModifiers": [0,1,2,12]
+    },
+    "InvertedSpire":  
+    {
+        "name": "The Inverted Spire",
+        "commandname": ["invertedspire","theinvertedspire","is"],
+        "champions":["Unstoppable <:Unstoppable:819343119425601556>", "Anti-Barrier <:AntiBarrier:819343119103426611>"],
+        "shields":["Void <:Void:819343119455748136> (Uncommon)", "Solar <:Solar:819343119391653918> (Uncommon)","Arc <:Arc:819343119384182814> (Uncommon)"],
+        "hashIdentifier": "2599001919",
+        "KeptModifiers": [0,1,2,3,4,14]
+    },
+    "Broodhold":  
+    {
+        "name": "Broodhold",
+        "commandname": ["broodhold","bh","trash","brood"],
+        "champions":["Unstoppable <:Unstoppable:819343119425601556>", "Anti-Barrier <:AntiBarrier:819343119103426611>"],
+        "shields":["Arc <:Arc:819343119384182814> (Rare)", "Solar <:Solar:819343119391653918> (Rare)"],
+        "hashIdentifier": "265186825",
+        "KeptModifiers": [0,1,2,12]
+    },
+    "WardenOfNothing":  
+    {
+        "name": "Warden Of Nothing",
+        "commandname": ["wardenofnothing","warden","won"],
+        "champions":["Overload <:Overload:819343119451422720>", "Anti-Barrier <:AntiBarrier:819343119103426611>","Unstoppable <:Unstoppable:819343119425601556>"],
+        "shields":["Void <:Void:819343119455748136> (Uncommon)", "Solar <:Solar:819343119391653918> (Rare)"],
+        "hashIdentifier": "557845334",
+        "KeptModifiers": [0,1,2]
+    },
+    "HollowedLair":  
+    {
+        "name": "The Hollowed Lair",
+        "commandname": ["hollowedlair","thehollowedlair","hl"],
+        "champions":["-", "-"],
+        "shields":["Arc <:Arc:819343119384182814> (Uncommon)", "Solar <:Solar:819343119391653918> (Uncommon)"],
+        "hashIdentifier": "-1",
+        "KeptModifiers": []
+    },
+    "Corrupted":  
+    {
+        "name": "The Corrupted",
+        "commandname": ["corrupted","thecorrupted","corrupt","c"],
+        "champions":["Overload <:Overload:819343119451422720>", "Unstoppable <:Unstoppable:819343119425601556>"],
+        "shields":["Void <:Void:819343119455748136> (Common)", "Arc <:Arc:819343119384182814> (Common)","Solar <:Solar:819343119391653918> (Uncommon)"],
+        "hashIdentifier": "2416314393",
+        "KeptModifiers": [0,1,2,12]
+    },
+    "ScarletKeep":  
+    {
+        "name": "The Scarlet Keep",
+        "commandname": ["scarletkeep","thescarletkeep","sk"],
+        "champions":["Unstoppable <:Unstoppable:819343119425601556>", "Anti-Barrier <:AntiBarrier:819343119103426611>"],
+        "shields":["Solar <:Solar:819343119391653918> (Common)","Arc <:Arc:819343119384182814> (Uncommon)"],
+        "hashIdentifier": "1495545956",
+        "KeptModifiers": [0,1,2,12]
+    },
+    "Glassway":  
+    {
+        "name": "The Glassway",
+        "commandname": ["glassway","theglassway","glass","gw"],
+        "champions":["Overload <:Overload:819343119451422720>", "Anti-Barrier <:AntiBarrier:819343119103426611>"],
+        "shields":["None"],
+        "hashIdentifier": "3812135451",
+        "KeptModifiers": [0,1,2,12]
+    },
+    "Disgraced":  
+    {
+        "name": "The Disgraced",
+        "commandname": ["disgraced","thedisgraced","d"],
+        "champions":["Unstoppable <:Unstoppable:819343119425601556>", "Anti-Barrier <:AntiBarrier:819343119103426611>"],
+        "shields":["Arc <:Arc:819343119384182814> (Common)", "Solar <:Solar:819343119391653918> (Uncommon)"],
+        "hashIdentifier": "2136458560",
+        "KeptModifiers": [0,1,2,12]
+    },
+    "FallenSABER":  
+    {
+        "name": "Fallen S.A.B.E.R.",
+        "commandname": ["fallensaber","saber","fallen","fs"],
+        "champions":["Overload <:Overload:819343119451422720>", "Anti-Barrier <:AntiBarrier:819343119103426611>"],
+        "shields":["Void <:Void:819343119455748136> (Uncommon)", "Arc <:Arc:819343119384182814> (Rare)"],
+        "hashIdentifier": "3293630132",
+        "KeptModifiers": [0,1,2,12]
+    },
+    "ProvingGround":  
+    {
+        "name": "Proving Ground",
+        "commandname": ["provingground","pg"],
+        "champions":["Redacted"],
+        "shields":["Redacted"],
+        "hashIdentifier": "2103025315",
+        "KeptModifiers": [0,1,2,12]
+    }
+}
