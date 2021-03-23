@@ -19,96 +19,101 @@ module.exports = class Clear extends BaseCommand {
     var lastElemIndex = String(message).toString().split(' ').length
     var lastElem = String(message).toString().split(' ')[lastElemIndex - 1]
 
-    if(!isNaN(lastElem))
+    if(String(message).split(" ")[1] != null)
     {
-      if(parseInt(lastElem) > maxNonVisableSearchValues)
+      if(!isNaN(lastElem))
       {
-        maxSearchValues = maxNonVisableSearchValues;
-      }else
-      {
-        maxSearchValues = parseInt(lastElem);
-      }
-
-      if(lastElemIndex>2)
-      {
-        query = query.substring(0, query.lastIndexOf(" "));
-
-      }
-
-    }
-
-    get("https://www.bungie.net/Platform/Destiny2/Armory/Search/"+ DestinyActivityDefinition +"/" + query,
-    async function () {
-
-      var json  = JSON.parse(this.responseText).Response.results;
-      var resultLength = json.totalResults;
-      if(resultLength > 0)
-      {
-        if(resultLength == 1)
+        if(parseInt(lastElem) > maxNonVisableSearchValues)
         {
-          getActivity(json.results[0].hash,message);
+          maxSearchValues = maxNonVisableSearchValues;
+        }else
+        {
+          maxSearchValues = parseInt(lastElem);
+        }
+
+        if(lastElemIndex>2)
+        {
+          query = query.substring(0, query.lastIndexOf(" "));
+
+        }
+
+      }
+
+      get("https://www.bungie.net/Platform/Destiny2/Armory/Search/"+ DestinyActivityDefinition +"/" + query,
+      async function () {
+
+        var json  = JSON.parse(this.responseText).Response.results;
+        var resultLength = json.totalResults;
+        if(resultLength > 0)
+        {
+          if(resultLength == 1)
+          {
+            getActivity(json.results[0].hash,message);
+          }
+          else
+          {
+
+            if(resultLength < maxSearchValues)
+            {
+              maxSearchValues = resultLength;
+            }
+
+            var hashResults = new Array(maxSearchValues);
+            for (let index = 0; index < maxSearchValues ; index++) {
+
+              hashResults[index] = json.results[index];
+
+            }
+
+            var reactionList = ['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣','🔟']
+
+            const timeout = (maxSearchValues * 1000) + 5000
+
+            const searchEmbed = new MessageEmbed();
+            searchEmbed.setColor('#477ba9')
+            searchEmbed.setTitle('Searched Activities:'); 
+            searchEmbed.setDescription('React with the according activity you want to view.'); 
+
+            var displayActivities = "";
+            for (let index = 0; index < maxSearchValues ; index++) {
+              displayActivities = displayActivities + " \n" + reactionList[index] + " : " +  hashResults[index].displayProperties.name
+            }
+            searchEmbed.addField("Activities :",displayActivities); 
+            const msg = await message.channel.send(searchEmbed);
+
+            for (let index = 0; index < maxSearchValues; index++) {
+
+              await msg.react(reactionList[index]);
+            }
+
+            await msg.awaitReactions((reaction,user) => user.id == user.id && (reactionList.includes(reaction.emoji.name)), {max: 1, time: timeout})
+            .then(async collected => 
+                {
+                    if(reactionList.includes(collected.first().emoji.name))
+                    {
+                      var selection = reactionList.indexOf(collected.first().emoji.name);
+                      msg.delete().catch("Hmmmm");
+                      getActivity(hashResults[selection].hash,message);
+
+                    }
+              
+                }).catch(async ( )=> 
+                {
+                    msg.delete().catch("Hmmmm");
+                    return message.reply("Invalid Response: You did not react to a message in the given time period.")
+                
+                });
+          }
         }
         else
         {
-
-          if(resultLength < maxSearchValues)
-          {
-            maxSearchValues = resultLength;
-          }
-
-          var hashResults = new Array(maxSearchValues);
-          for (let index = 0; index < maxSearchValues ; index++) {
-
-            hashResults[index] = json.results[index];
-
-          }
-
-          var reactionList = ['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣','🔟']
-
-          const timeout = (maxSearchValues * 1000) + 5000
-
-          const searchEmbed = new MessageEmbed();
-          searchEmbed.setColor('#477ba9')
-          searchEmbed.setTitle('Searched Activities:'); 
-          searchEmbed.setDescription('React with the according activity you want to view.'); 
-
-          var displayActivities = "";
-          for (let index = 0; index < maxSearchValues ; index++) {
-            displayActivities = displayActivities + " \n" + reactionList[index] + " : " +  hashResults[index].displayProperties.name
-          }
-          searchEmbed.addField("Activities :",displayActivities); 
-          const msg = await message.channel.send(searchEmbed);
-
-          for (let index = 0; index < maxSearchValues; index++) {
-
-            await msg.react(reactionList[index]);
-          }
-
-          await msg.awaitReactions((reaction,user) => user.id == user.id && (reactionList.includes(reaction.emoji.name)), {max: 1, time: timeout})
-          .then(async collected => 
-              {
-                  if(reactionList.includes(collected.first().emoji.name))
-                  {
-                    var selection = reactionList.indexOf(collected.first().emoji.name);
-                    msg.delete().catch("Hmmmm");
-                    getActivity(hashResults[selection].hash,message);
-
-                  }
-            
-              }).catch(async ( )=> 
-              {
-                  msg.delete().catch("Hmmmm");
-                  return message.reply("Invalid Response: You did not react to a message in the given time period.")
-              
-              });
+          message.channel.send("Unknown Activity: Could not find activity \'" + query + "\'");
         }
-      }
-      else
-      {
-        message.channel.send("Unknown Activity: Could not find activity \'" + query + "\'");
-      }
-    });
-      
+      });
+    }else
+    {
+      message.channel.send("Invalid Command : Please type an activity you wish to search (E.g. !activity last wish)");
+    }
   }
   
 }
