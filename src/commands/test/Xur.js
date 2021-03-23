@@ -41,10 +41,19 @@ function getXurInventory()
     get("https://www.bungie.net/Platform/Destiny2/Vendors/?components=402",
     function () {
       var json  = JSON.parse(this.responseText);
+      console.log(json.Response);
       var itemSales = json.Response.sales.data[xurHash].saleItems;
+
+      var totalItems = 0
+      for (const iterator in itemSales) {
+        totalItems = totalItems + 1;
+      }
+
       const ignoredItems = [];
-      var itemArray = new Array(6)
+      
+      var itemArray = new Array(totalItems)
       var count = 0;
+
       for (item in itemSales) {
         if(!ignoredItems.includes(itemSales[item].itemHash))
         {
@@ -53,10 +62,10 @@ function getXurInventory()
         }
         count = count + 1;
       }
-
-      itemArray.sort(function(a, b) {
-        return parseFloat(a.vendorItemIndex) - parseFloat(b.vendorItemIndex);
-      })
+      console.log(itemArray);
+      // itemArray.sort(function(a, b) {
+      //   return parseFloat(a.vendorItemIndex) - parseFloat(b.vendorItemIndex);
+      // })
       
       for (const iterator of itemArray) {
         getItem(iterator.itemHash, iterator)
