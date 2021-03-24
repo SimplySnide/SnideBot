@@ -24,24 +24,41 @@ function getItem(itemHash, optionalXurDetails)
       newEmbed.addField(json.Response.displayProperties.name, json.Response.itemTypeAndTierDisplayName)//itemTypeAndTierDisplayName
       if(optionalXurDetails.costs[0] != undefined)
       {
-        newEmbed.setFooter("Lengedary Shards : " + optionalXurDetails.costs[0].quantity)
+        newEmbed.setFooter("Legendary Shards : " + optionalXurDetails.costs[0].quantity)
 
       }
       else{
-        newEmbed.setFooter("Lengedary Shards : " + 0)
+        newEmbed.setFooter("Legendary Shards : " + 0)
 
       }
       discordMessage.channel.send(newEmbed)
     });
 }
 
+
+function timeDifferance(date_future, date_now) //
+{
+  var delta = Math.abs(date_future - date_now) / 1000;
+  // calculate (and subtract) whole days
+  var days = Math.floor(delta / 86400);
+  delta -= days * 86400;
+  // calculate (and subtract) whole hours
+  var hours = (Math.floor(delta / 3600) % 24) + 8; //+8 indicates PST to UTC
+  delta -= (hours - 8) * 3600;
+  // calculate (and subtract) whole minutes
+  var minutes = (Math.floor(delta / 60) % 60);
+  delta -= minutes * 60;
+  var seconds = Math.floor(delta);
+  
+  return days + "d : " + hours+ "h : " + minutes + "m : " + seconds + "s";
+}
+
 function getXurInventory()
 {
     const xurHash = '2190858386';
-    get("https://www.bungie.net/Platform/Destiny2/Vendors/?components=402",
+    get("https://www.bungie.net/Platform/Destiny2/Vendors/?components=402,400",
     function () {
       var json  = JSON.parse(this.responseText);
-      console.log(json.Response);
       var itemSales = json.Response.sales.data[xurHash].saleItems;
 
       var totalItems = 0
@@ -49,27 +66,37 @@ function getXurInventory()
         totalItems = totalItems + 1;
       }
 
-      const ignoredItems = [];
-      
-      var itemArray = new Array(totalItems)
-      var count = 0;
-
-      for (item in itemSales) {
-        if(!ignoredItems.includes(itemSales[item].itemHash))
-        {
-          itemArray[count] = itemSales[item];
-          //getItem(itemSales[item].itemHash, itemSales[item]);
+      if(totalItems <= 2)
+      {
+        var date_future = new Date(json.Response.vendors.data[xurHash].nextRefreshDate);
+        var date_now = new Date();
+        discordMessage.channel.send("Xur is currently restocking his inventory, he will be back in : " + timeDifferance(date_future, date_now));
+      }
+      else
+      {
+        const ignoredItems = [];
+        var itemArray = new Array(totalItems)
+        var count = 0;
+  
+        for (item in itemSales) {
+          if(!ignoredItems.includes(itemSales[item].itemHash))
+          {
+            itemArray[count] = itemSales[item];
+            //getItem(itemSales[item].itemHash, itemSales[item]);
+          }
+          count = count + 1;
         }
-        count = count + 1;
+        console.log(itemArray);
+        // itemArray.sort(function(a, b) {
+        //   return parseFloat(a.vendorItemIndex) - parseFloat(b.vendorItemIndex);
+        // })
+        
+        for (const iterator of itemArray) {
+          getItem(iterator.itemHash, iterator)
+        }
       }
-      console.log(itemArray);
-      // itemArray.sort(function(a, b) {
-      //   return parseFloat(a.vendorItemIndex) - parseFloat(b.vendorItemIndex);
-      // })
-      
-      for (const iterator of itemArray) {
-        getItem(iterator.itemHash, iterator)
-      }
+
+
       // var lowestValue = Infinity;
       // var sortedItemArray = new Array(6);
       // var hashIndexexValue = 0;
