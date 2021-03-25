@@ -34,7 +34,6 @@ module.exports = class voiceStateUpdate extends BaseEvent {
           else
           {
               var foundRole = previousChannel.guild.roles.cache.find(role => role.name === previousChannel.name);
-              console.log(previousChannelInfo.id)
               var member = previousChannelInfo.guild.members.cache.get(previousChannelInfo.id);
               member.roles.remove(foundRole);
           }   
@@ -49,15 +48,28 @@ module.exports = class voiceStateUpdate extends BaseEvent {
           {
 
             //JOINED VOICE CHANNEL
-            console.log("joined Voice");
-            channel.guild.roles.create({
-              data: {
-                name: channel.name,
-                color: RoleColour,
-              },
-              reason: "test"
-            }).then(function() {
-            
+            if(channel.guild.roles.cache.find(role => role.name === channel.name) == undefined)
+            {
+              channel.guild.roles.create({
+                data: {
+                  name: channel.name,
+                  color: RoleColour,
+                },
+              }).then(function() {
+              
+                client.channels.fetch(currentChannelInfo.channelID)
+                .then(currentChannel => {
+      
+                  var foundRole = currentChannel.guild.roles.cache.find(role => role.name === currentChannel.name);
+                  var member = currentChannelInfo.guild.members.cache.get(currentChannelInfo.id);
+                  member.roles.add(foundRole);
+      
+                });
+  
+              }).catch(console.error);
+            }
+            else
+            {
               client.channels.fetch(currentChannelInfo.channelID)
               .then(currentChannel => {
     
@@ -66,8 +78,7 @@ module.exports = class voiceStateUpdate extends BaseEvent {
                 member.roles.add(foundRole);
     
               });
-
-            }).catch(console.error);
+            } 
             //var foundRole = client.guild.roles.cache.find(role => role.name === channel.name);
 
           }
@@ -78,7 +89,6 @@ module.exports = class voiceStateUpdate extends BaseEvent {
             client.channels.fetch(previousChannelInfo.channelID)
             .then(previousChannel => {
               var usersInPreviousChannel = previousChannel.members.size;
-              console.log(previousChannelInfo.channelID)
               if(usersInPreviousChannel == 0)
               {
                 var role = previousChannel.guild.roles.cache.find(role => role.name === previousChannel.name);
@@ -90,20 +100,33 @@ module.exports = class voiceStateUpdate extends BaseEvent {
               else
               {
                   var foundRole = previousChannel.guild.roles.cache.find(role => role.name === previousChannel.name);
-                  console.log(previousChannelInfo.id)
                   var member = previousChannelInfo.guild.members.cache.get(previousChannelInfo.id);
                   member.roles.remove(foundRole);
               }   
             });
 
-            channel.guild.roles.create({
-              data: {
-                name: channel.name,
-                color: RoleColour,
-              },
-              reason: "test"
-            }).then(function() {
-            
+            if(channel.guild.roles.cache.find(role => role.name === channel.name) == undefined)
+            {
+              channel.guild.roles.create({
+                data: {
+                  name: channel.name,
+                  color: RoleColour,
+                },
+              }).then(function() {
+              
+                client.channels.fetch(currentChannelInfo.channelID)
+                .then(currentChannel => {
+      
+                  var foundRole = currentChannel.guild.roles.cache.find(role => role.name === currentChannel.name);
+                  var member = currentChannelInfo.guild.members.cache.get(currentChannelInfo.id);
+                  member.roles.add(foundRole);
+      
+                });
+  
+              }).catch(console.error);
+            }
+            else
+            {
               client.channels.fetch(currentChannelInfo.channelID)
               .then(currentChannel => {
     
@@ -112,9 +135,7 @@ module.exports = class voiceStateUpdate extends BaseEvent {
                 member.roles.add(foundRole);
     
               });
-
-            }).catch(console.error);
-          
+            } 
           }
 
 
