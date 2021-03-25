@@ -2,7 +2,7 @@ const { DiscordAPIError, MessageEmbed, Message, Guild, User } = require('discord
 const BaseCommand = require('../../utils/structures/BaseCommand');
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
-module.exports = class Clear extends BaseCommand {
+module.exports = class DestinyActivity extends BaseCommand {
   constructor() {
     super('activity', 'activity', []);
   }

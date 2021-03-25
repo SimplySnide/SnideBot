@@ -2,7 +2,7 @@ const { DiscordAPIError, MessageEmbed } = require('discord.js');
 const BaseCommand = require('../../utils/structures/BaseCommand');
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 var discordMessage = "";
-module.exports = class Nightfall extends BaseCommand {
+module.exports = class Xur extends BaseCommand {
   constructor() {
     super('xur', 'xur', []);
   }
@@ -38,17 +38,17 @@ function getItem(itemHash, optionalXurDetails)
 
 function timeDifferance(date_future, date_now) //
 {
-  var delta = Math.abs(date_future - date_now) / 1000;
-  // calculate (and subtract) whole days
-  var days = Math.floor(delta / 86400);
-  delta -= days * 86400;
-  // calculate (and subtract) whole hours
-  var hours = (Math.floor(delta / 3600) % 24) + 8; //+8 indicates PST to UTC
-  delta -= (hours - 8) * 3600;
-  // calculate (and subtract) whole minutes
-  var minutes = (Math.floor(delta / 60) % 60);
-  delta -= minutes * 60;
-  var seconds = Math.floor(delta);
+  const pstToUTCDifference = 8;
+  var moment = require('moment');
+
+  var start_date = moment(date_now, 'YYYY-MM-DD HH:mm:ss');
+  var end_date = moment(date_future, 'YYYY-MM-DD HH:mm:ss');
+
+  var duration = moment.duration(end_date.diff(start_date));
+  var days = Math.ceil(duration.asDays());    
+  var hours = Math.floor(duration.asHours() + pstToUTCDifference) % 24;
+  var minutes = Math.floor(duration.asMinutes()) % 60;
+  var seconds = (Math.floor(duration.asSeconds()) % 60);
   
   return days + "d : " + hours+ "h : " + minutes + "m : " + seconds + "s";
 }
@@ -70,6 +70,8 @@ function getXurInventory()
       {
         var date_future = new Date(json.Response.vendors.data[xurHash].nextRefreshDate);
         var date_now = new Date();
+
+
         discordMessage.channel.send("Xur is currently restocking his inventory, he will be back in : " + timeDifferance(date_future, date_now));
       }
       else
