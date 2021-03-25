@@ -10,6 +10,6 @@ const client = new Client();
   await registerCommands(client, '../commands');
   await registerEvents(client, '../events');
   await client.login(process.env.TOKEN);
-  client.user.setActivity("!info");
+  //client.user.setActivity("!info");
 })();
 

@@ -44,9 +44,10 @@ function timeDifferance(date_future, date_now) //
   var start_date = moment(date_now, 'YYYY-MM-DD HH:mm:ss');
   var end_date = moment(date_future, 'YYYY-MM-DD HH:mm:ss');
 
-  var duration = moment.duration(end_date.diff(start_date));
-  var days = Math.ceil(duration.asDays());    
-  var hours = Math.floor(duration.asHours() + pstToUTCDifference) % 24;
+  var duration = moment.duration(end_date.diff(start_date)).add(pstToUTCDifference, 'hours');
+  console.log(duration.asDays())
+  var days = Math.floor(duration.asDays());    
+  var hours = Math.floor(duration.asHours()) % 24;
   var minutes = Math.floor(duration.asMinutes()) % 60;
   var seconds = (Math.floor(duration.asSeconds()) % 60);
   
