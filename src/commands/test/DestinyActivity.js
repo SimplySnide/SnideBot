@@ -10,8 +10,7 @@ module.exports = class DestinyActivity extends BaseCommand {
 
 
   async run(client, message, args) {
-      
-    if(message.member.hasPermission('ADD_REACTIONS'))
+    if(message.guild.me.permissionsIn(message.channel).has('ADD_REACTIONS'))
     {
       var query = String(message).toString().split(' ').slice(1).join(' ')
       var DestinyActivityDefinition = 'DestinyActivityDefinition';
