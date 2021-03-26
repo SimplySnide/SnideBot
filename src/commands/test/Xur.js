@@ -1,7 +1,8 @@
-const { DiscordAPIError, MessageEmbed } = require('discord.js');
+const { DiscordAPIError, MessageEmbed, UserFlags } = require('discord.js');
 const BaseCommand = require('../../utils/structures/BaseCommand');
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 var discordMessage = "";
+var waitMessage;
 module.exports = class Xur extends BaseCommand {
   constructor() {
     super('xur', 'xur', []);
@@ -9,30 +10,18 @@ module.exports = class Xur extends BaseCommand {
   
   async run(client, message, args) {
     discordMessage = message;
-    getXurInventory();
+    discordMessage.reply("Just one moment...")
+    .then(msg => {
+      waitMessage = msg;
+      getXurInventory();
+    });
   }
 }
 
-function getItem(itemHash, optionalXurDetails)
+async function getItem(itemHash)
 {
-    //t/Platform/Destiny2/Manifest/DestinyInventoryItemDefinition/814876685/
-    get("https://www.bungie.net/Platform/Destiny2/Manifest/DestinyInventoryItemDefinition/" + itemHash + "/",
-    function () {
-      var json  = JSON.parse(this.responseText);
-      const newEmbed = new MessageEmbed();
-      newEmbed.setThumbnail("https://www.bungie.net/" + json.Response.displayProperties.icon)
-      newEmbed.addField(json.Response.displayProperties.name, json.Response.itemTypeAndTierDisplayName)//itemTypeAndTierDisplayName
-      if(optionalXurDetails.costs[0] != undefined)
-      {
-        newEmbed.setFooter("Legendary Shards : " + optionalXurDetails.costs[0].quantity)
-
-      }
-      else{
-        newEmbed.setFooter("Legendary Shards : " + 0)
-
-      }
-      discordMessage.channel.send(newEmbed)
-    });
+  var json = await awaitGet("https://www.bungie.net/Platform/Destiny2/Manifest/DestinyInventoryItemDefinition/" + itemHash + "/");
+  return json.Response;
 }
 
 
@@ -57,7 +46,7 @@ function getXurInventory()
 {
     const xurHash = '2190858386';
     get("https://www.bungie.net/Platform/Destiny2/Vendors/?components=402,400",
-    function () {
+    async function () {
       var json  = JSON.parse(this.responseText);
       var itemSales = json.Response.sales.data[xurHash].saleItems;
 
@@ -66,64 +55,65 @@ function getXurInventory()
         totalItems = totalItems + 1;
       }
 
+
       if(totalItems <= 2)
       {
         var date_future = new Date(json.Response.vendors.data[xurHash].nextRefreshDate);
         var date_now = new Date();
 
-
         discordMessage.channel.send("Xur is currently restocking his inventory, he will be back in : " + timeDifferance(date_future, date_now));
       }
       else
       {
-        const ignoredItems = [];
-        var itemArray = new Array(totalItems)
-        var count = 0;
-  
-        for (item in itemSales) {
-          if(!ignoredItems.includes(itemSales[item].itemHash))
+
+        var xurInfo = await awaitGet("https://www.bungie.net/Platform/Destiny2/Manifest/DestinyVendorDefinition/"+xurHash+"/");
+
+        var xurEmbed = new MessageEmbed;
+        xurEmbed.setTitle(xurInfo.Response.displayProperties.name);
+        xurEmbed.setDescription(xurInfo.Response.displayProperties.description);
+        xurEmbed.setThumbnail("https://www.bungie.net" + xurInfo.Response.displayProperties.icon);
+        xurEmbed.setImage("https://www.bungie.net" + xurInfo.Response.displayProperties.largeIcon);
+        const ignoredItems = [2125848607,3875551374]
+        const playerClass = ["Titan","Hunter","Warlock"]
+        var count = 0
+        for (iterator in itemSales) {
+          if(!ignoredItems.includes(itemSales[iterator].itemHash))
           {
-            itemArray[count] = itemSales[item];
-            //getItem(itemSales[item].itemHash, itemSales[item]);
+            var item = await getItem(itemSales[iterator].itemHash);
+            if(item.classType < 3)
+            {
+              xurEmbed.addField(item.displayProperties.name, playerClass[item.classType]+" "+ item.itemTypeDisplayName+"\n[view](https://www.bungie.net"+ item.screenshot +")",true);
+            }
+            else
+            {
+              xurEmbed.addField(item.displayProperties.name, item.itemTypeDisplayName+"\n[view](https://www.bungie.net"+ item.screenshot +")",true);
+            }
           }
           count = count + 1;
         }
-        console.log(itemArray);
-        // itemArray.sort(function(a, b) {
-        //   return parseFloat(a.vendorItemIndex) - parseFloat(b.vendorItemIndex);
-        // })
-        
-        for (const iterator of itemArray) {
-          getItem(iterator.itemHash, iterator)
-        }
+        waitMessage.delete();
+        discordMessage.channel.send(xurEmbed);
       }
 
-
-      // var lowestValue = Infinity;
-      // var sortedItemArray = new Array(6);
-      // var hashIndexexValue = 0;
-      // var indexValue = 0;
-      
-      // count = 0;
-      // for (let index = 0; index < itemArray.length; index++) {
-      //   for (const item of itemArray) {
-      //     if(item.vendorItemIndex < lowestValue)
-      //     {
-      //       lowestValue = item.vendorItemIndex;
-      //       hashIndexexValue = item;
-      //     }
-      //   }
-      //   sortedItemArray[index] = hashIndexexValue;
-      //   itemArray = delete itemArray[itemArray.indexOf(hashIndexexValue)];
-      //   console.log(itemArray);
-      // }
-
-      // for (const iterator of sortedItemArray) {
-      //   console.log(iterator.itemHash);
-      // }
     });
 }
 
+
+async function awaitGet(url) {
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", url, true);
+  xhr.setRequestHeader("X-API-Key", process.env.BUNGIE_API);
+  return new Promise((resolve, reject) => 
+  {
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && this.status === 200) {
+            resolve(JSON.parse(xhr.responseText));
+        }
+    };
+    xhr.send();
+  });
+
+}
 
 //Platform/Destiny2/Vendors/?components=400,402
 async function get(url, callback) {

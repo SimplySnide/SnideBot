@@ -15,7 +15,6 @@ module.exports = class voiceStateUpdate extends BaseEvent {
 
   //#region 
       const RoleColour = "DARK_green".toUpperCase();;
-      //console.log(previousChannelInfo);
 
       const joinedUser = currentChannelInfo.id;
       if(currentChannelInfo.channelID == null) //Has left voice channel
