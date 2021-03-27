@@ -167,6 +167,7 @@ async function embedNightfallData(json, message, newEmbed,optionalLoadMessage)
     newEmbed.setDescription(nightfalldescription); 
     newEmbed.setImage("https://www.bungie.net" + json.pgcrImage);
     newEmbed.setThumbnail("https://www.bungie.net" + json.displayProperties.icon);
+    newEmbed.setFooter('\'Snide Bot created by SimplySnide\'');
 
     message.channel.send(newEmbed);
     
@@ -223,6 +224,7 @@ async function embedNightfallData(json, message, newEmbed,optionalLoadMessage)
           newEmbed.setImage("https://www.bungie.net" + json.pgcrImage);
           newEmbed.setThumbnail("https://www.bungie.net" + json.displayProperties.icon);
           newEmbed.addField("Modifieres", modifierString , true);
+          newEmbed.setFooter('\'Snide Bot created by SimplySnide\'');
 
           message.channel.send(newEmbed);
           

@@ -25,7 +25,7 @@ async function getItem(itemHash)
 }
 
 
-function timeDifferance(date_future, date_now) //
+function timeDifferance(date_future, date_now, departure) //
 {
   const pstToUTCDifference = 8;
   var moment = require('moment');
@@ -34,6 +34,11 @@ function timeDifferance(date_future, date_now) //
   var end_date = moment(date_future, 'YYYY-MM-DD HH:mm:ss');
 
   var duration = moment.duration(end_date.diff(start_date)).add(pstToUTCDifference, 'hours');
+
+  if(departure)
+  {
+    duration.add(-3, 'days');
+  }
   var days = Math.floor(duration.asDays());    
   var hours = Math.floor(duration.asHours()) % 24;
   var minutes = Math.floor(duration.asMinutes()) % 60;
@@ -55,12 +60,11 @@ function getXurInventory()
         totalItems = totalItems + 1;
       }
 
-
+      var date_future = new Date(json.Response.vendors.data[xurHash].nextRefreshDate);
+      var date_now = new Date();
+      
       if(totalItems <= 2)
       {
-        var date_future = new Date(json.Response.vendors.data[xurHash].nextRefreshDate);
-        var date_now = new Date();
-
         discordMessage.channel.send("Xur is currently restocking his inventory, he will be back in : " + timeDifferance(date_future, date_now));
       }
       else
@@ -68,11 +72,15 @@ function getXurInventory()
 
         var xurInfo = await awaitGet("https://www.bungie.net/Platform/Destiny2/Manifest/DestinyVendorDefinition/"+xurHash+"/");
 
-        var xurEmbed = new MessageEmbed;
+        const xurEmbed = new MessageEmbed;
         xurEmbed.setTitle(xurInfo.Response.displayProperties.name);
         xurEmbed.setDescription(xurInfo.Response.displayProperties.description);
         xurEmbed.setThumbnail("https://www.bungie.net" + xurInfo.Response.displayProperties.icon);
         xurEmbed.setImage("https://www.bungie.net" + xurInfo.Response.displayProperties.largeIcon);
+        xurEmbed.setColor('#477ba9');
+        //xurEmbed.setFooter('\'Snide Bot created by SimplySnide\'');
+        xurEmbed.setFooter('Xur leaves in  : ' + timeDifferance(date_future, date_now, true) + '\n\'Snide Bot created by SimplySnide\'');
+
         const ignoredItems = [2125848607,3875551374]
         const playerClass = ["Titan","Hunter","Warlock"]
         var count = 0

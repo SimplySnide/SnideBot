@@ -13,7 +13,8 @@ module.exports = class Info extends BaseCommand {
     [ '\n **!nightfall** - Displays current nightfall information, (Usage : !nightfall)', 
       '\n **!nightfall [*strike* ]**  - Displays selected nightfall, (Usage : !nightfall LakeOfShadows)',
       '\n **!clear [*amount* ]**  - Deletes messages , (Usage : !clear 10)',
-      '\n **!activity [*value* ]**  - Search destiny 2 activites , (Usage : !activity last wish)'
+      '\n **!activity [*value* ]**  - Search destiny 2 activites , (Usage : !activity last wish)',
+      '\n **!xur - Get Xur\'s current inventory, (Usage : !xur)'
     ];
     var commandString = ""
     for (const command of commandList) {

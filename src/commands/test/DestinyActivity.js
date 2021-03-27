@@ -74,6 +74,7 @@ module.exports = class DestinyActivity extends BaseCommand {
               searchEmbed.setColor('#477ba9')
               searchEmbed.setTitle('Searched Activities:'); 
               searchEmbed.setDescription('React with the according activity you want to view.'); 
+              searchEmbed.setFooter('\'Snide Bot created by SimplySnide\'');
 
               var displayActivities = "";
               for (let index = 0; index < maxSearchValues ; index++) {
@@ -138,6 +139,8 @@ function getActivity(hashIdentifier,message)
     }
     activityEmbed.setImage("https://www.bungie.net/" + json.pgcrImage);
     activityEmbed.setColor('#477ba9');
+    activityEmbed.setFooter('\'Snide Bot created by SimplySnide\'');
+
     message.channel.send(activityEmbed);
     
   });
