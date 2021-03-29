@@ -58,7 +58,6 @@ async function readRefreshToken()
 }
 
 async function getAuthorized(url,AccessToken, callback) { //Used to get APIO Item DATA
-  console.log(AccessToken);
   var xhr = new XMLHttpRequest();
   xhr.open("GET", url, true);
   xhr.setRequestHeader("X-API-Key", process.env.BUNGIE_API);

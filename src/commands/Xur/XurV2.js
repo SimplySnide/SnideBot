@@ -12,7 +12,7 @@ const playerClass = ["<:Titan:825878019201302548>","<:Hunter:825878018593390603>
 
 module.exports = class XurV2 extends BaseCommand {
   constructor() {
-    super('xur', 'xur', []);
+    super('xur', 'xur', ['x']);
   }
   //
   async run(client, message, args) {
@@ -112,6 +112,7 @@ module.exports = class XurV2 extends BaseCommand {
                 }
             });
         });
+        
     }
 }
 
