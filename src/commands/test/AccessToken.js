@@ -32,7 +32,7 @@ async function getNewAccessToken()
   var newResponseData = JSON.parse(await getAccessCode_RefreshToken(currentRefreshToken.refresh_token));
   if(newResponseData != 404)
   {
-    //writeRefreshToken(JSON.stringify(newResponseData));
+    writeRefreshToken(JSON.stringify(newResponseData));
     return newResponseData.access_token
   }
   else
