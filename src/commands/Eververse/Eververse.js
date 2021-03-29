@@ -44,7 +44,7 @@ module.exports = class XurV2 extends BaseCommand {
                             eververseEmbed.setDescription(eververseData.displayProperties.description);
                             eververseEmbed.setThumbnail("https://www.bungie.net/" + eververseData.displayProperties.icon);
                             eververseEmbed.setColor('#477ba9');
-                            eververseEmbed.setFooter('Next refresh : ' + timeDifferance(date_future, date_now, true) + '\n\'Snide Bot created by SimplySnide\'');
+                            eververseEmbed.setFooter('Next refresh : ' + timeDifferance(date_future, date_now) + '\n\'Snide Bot created by SimplySnide\'');
                             eververseEmbed.setThumbnail("https://www.bungie.net/" + eververseData.displayProperties.icon);
                             eververseEmbed.setImage("https://www.bungie.net/" + eververseData.displayProperties.largeIcon);
                             var silverItemArray = [];
