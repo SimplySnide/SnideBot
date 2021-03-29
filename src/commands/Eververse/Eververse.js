@@ -176,3 +176,25 @@ async function getAuthorized(url, callback) { //Used to get APIO Item DATA
     };
     xhr.send();
 }
+
+function timeDifferance(date_future, date_now, departure) //
+{
+  const pstToUTCDifference = 8;
+  var moment = require('moment');
+
+  var start_date = moment(date_now, 'YYYY-MM-DD HH:mm:ss');
+  var end_date = moment(date_future, 'YYYY-MM-DD HH:mm:ss');
+
+  var duration = moment.duration(end_date.diff(start_date)).add(pstToUTCDifference, 'hours');
+
+  if(departure)
+  {
+    duration.add(-3, 'days');
+  }
+  var days = Math.floor(duration.asDays());    
+  var hours = Math.floor(duration.asHours()) % 24;
+  var minutes = Math.floor(duration.asMinutes()) % 60;
+  var seconds = (Math.floor(duration.asSeconds()) % 60);
+  
+  return days + "d : " + hours+ "h : " + minutes + "m : " + seconds + "s";
+}
