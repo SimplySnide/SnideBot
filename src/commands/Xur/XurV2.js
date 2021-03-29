@@ -43,6 +43,7 @@ module.exports = class XurV2 extends BaseCommand {
                         xurEmbed.setThumbnail("https://www.bungie.net/" + xurVendorData.displayProperties.icon);
                         xurEmbed.setColor('#477ba9');
                         xurEmbed.setFooter('Xur leaves in  : ' + timeDifferance(date_future, date_now, true) + '\n\'Snide Bot created by SimplySnide\'');
+                        xurEmbed.setImage("https://www.bungie.net/" + xurVendorData.displayProperties.largeIcon)
                         const ignoredItems = [2125848607,3875551374];
                         var itemHash = [];
                         var itemStats = []
