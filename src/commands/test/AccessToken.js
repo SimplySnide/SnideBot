@@ -2,69 +2,157 @@ const { DiscordAPIError, MessageEmbed } = require('discord.js');
 const BaseCommand = require('../../utils/structures/BaseCommand');
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const config = require('dotenv').config();
+var currentActiveToken = undefined;
 
 module.exports = class AccessToken extends BaseCommand {
     constructor() {
       super('', '', []);
     }
-    //a8919009f0027f3e2842c0398164b72e
+
     async run(client, message, args) {
 
-      // getTest(
-      //   function () {
-      //     console.log(this.getRequestHeader);
-      //   });
-        
-        getAuthorized("https://www.bungie.net/Platform/Destiny2/3/Profile/4611686018506576963/Character/2305843009681194902/Vendors/2190858386/?components=402,400,401",
-        function () {
-          console.log(this)
-          // var json  = JSON.parse(this.responseText);
-          // console.log(json.Response);
-        });
+      var accessToken = await getNewAccessToken();
+      getAuthorized("https://www.bungie.net/Platform/Destiny2/3/Profile/4611686018506576963/Character/2305843009681194902/Vendors/3361454721/?components=402,400,401", accessToken,
+      function () {
+        console.log(JSON.parse(this.responseText).Response)
+      });
     }
 }
 
-async function getAuthorized(url, callback) {
+async function getAccessTokenAuthCode(authorizationCode)
+{
+  var responseText = await getAccessCode_AuthorizationCode(authorizationCode);
+  await writeRefreshToken(responseText);
+  console.log("Success : \n"+ JSON.parse(await readRefreshToken()));
+}
+
+async function getNewAccessToken()
+{
+  var currentRefreshToken = JSON.parse(await readRefreshToken());
+  var newResponseData = JSON.parse(await getAccessCode_RefreshToken(currentRefreshToken.refresh_token));
+  if(newResponseData != 404)
+  {
+    //writeRefreshToken(JSON.stringify(newResponseData));
+    return newResponseData.access_token
+  }
+  else
+  {
+    return 404 //Data invalid, recreate token with authorization code
+  }
+
+
+}
+
+async function writeRefreshToken(respnseData)
+{
+  const fs = require("fs");
+  const fsPromises = require('fs').promises;
+  await fsPromises.writeFile('./src/commands/test/TextFile/refreshToken.txt', JSON.stringify(encrypt(respnseData)));
+}
+
+async function readRefreshToken()
+{
+  const fs = require("fs");
+  const fsPromises = require('fs').promises;
+  return decrypt(JSON.parse(await fsPromises.readFile('./src/commands/test/TextFile/refreshToken.txt')));
+}
+
+async function getAuthorized(url,AccessToken, callback) { //Used to get APIO Item DATA
+  console.log(AccessToken);
   var xhr = new XMLHttpRequest();
-  var AccessToken = 'CJGOAxKGAgAgdbuZbvZFny6AFN0oJ9shJCqXwz/LaGY7pPyMvf+u0ArgAAAA0bWOeYPtkLY+0ldg8SG2AncG4jDIqdnAkamwAJQKQ1aJCPZC8oNRkrNU3y6bAeRRA9C0vNprh4+i43dw1LsMfecNdbJhctO3th+0xqSATYWQx0x98kRB1AUI9dBmjMZ+i3n/GpCFTPzomqG0B+RkOyS24n1QiDkvlG+0z2+grL9LqJEs1mw8DLRsbedfR73BiquYp6dJU7jMOFbNljKob5WOfMD2bbBSUeRARb/71CwbWvm6d6DiEGQam1aDRaZyWarDUaZg8F+z5SO4/KmTNu9neV+aZf/DnZd2N4gPZ2U=';
   xhr.open("GET", url, true);
   xhr.setRequestHeader("X-API-Key", process.env.BUNGIE_API);
   xhr.setRequestHeader("Authorization", "Bearer " + AccessToken);
 
   xhr.onreadystatechange = function () {
-
-              callback.apply(xhr);
-
-  };
-  xhr.send();
-}
-
-async function getTest(callback) {
-  var xhr = new XMLHttpRequest();
-  xhr.open("GET", "https://www.bungie.net/en/oauth/authorize?client_id=35830&response_type=code", true);
-  xhr.setRequestHeader("X-API-Key", process.env.BUNGIE_API);
-  xhr.onreadystatechange = function () {
-
-              callback.apply(xhr);
-
-  };
-  xhr.send();
-}
-
-async function get(url, callback) {
-
-    var clientID = process.env.BUNGIE_CLIENTID;
-    var autherizationCode = 'b7f6333513d0a5ca6ca03f2b7d71e1e4';
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("X-API-Key", process.env.BUNGIE_API);
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhr.send("client_id="+ clientID + "&grant_type=authorization_code&code=" + autherizationCode);
-    xhr.onreadystatechange = function () {
-
-          callback.apply(xhr);
+    if (this.readyState == 4 && this.status == 200) { 
+      callback.apply(xhr);
     }
+  };
+  xhr.send();
+}
 
+async function getPersonalAuth(callback) {//Not used
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "https://snidebot.simplysnide.repl.co/Auth", true);
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status === 200) { 
+      callback.apply(xhr.responseText);
+    }
+    else
+    {
+      resolve("Invalid");
+    }
+  };
+  xhr.send();
+}
 
+async function getAccessCode_AuthorizationCode(autherizationCode) { //Request Access Token
+
+  var clientID = process.env.BUNGIE_CLIENTID;
+  var client_Secret = process.env.BUNGIE_CLIENTSECRET;
+
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "https://www.bungie.net/platform/app/oauth/token/", true);
+  xhr.setRequestHeader("X-API-Key", process.env.BUNGIE_API);
+  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  xhr.send("client_id="+ clientID + "&client_secret="+client_Secret+"&grant_type=authorization_code&code=" + autherizationCode);
+  return new Promise((resolve, reject) => 
+  {
+    xhr.onreadystatechange = async function () {
+      if (this.readyState == 4 && this.status == 200) { 
+        resolve(xhr.responseText);
+      }
+    }
+  });
 };
+
+async function getAccessCode_RefreshToken(RefreshToken) { //Request Access Token (pass a RefreshToken NOT a AuthorizationCode to get a access code and another refresh token to update) this is used once the user has approved the application to avoid excesive approval clicks
+
+  var clientID = process.env.BUNGIE_CLIENTID;
+  var client_Secret = process.env.BUNGIE_CLIENTSECRET;
+
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "https://www.bungie.net/platform/app/oauth/token/", true);
+  xhr.setRequestHeader("X-API-Key", process.env.BUNGIE_API);
+  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  xhr.send("client_id="+ clientID + "&client_secret="+client_Secret+"&grant_type=refresh_token&refresh_token=" + RefreshToken);
+  return new Promise((resolve, reject) => 
+  {
+    xhr.onreadystatechange = async function () {
+      if (this.readyState == 4 && this.status == 200) { 
+        resolve(xhr.responseText);
+      }
+      else if(this.readyState == 4 && this.status == 400)
+      {
+      }
+    }
+  });
+}
+
+const crypto = require('crypto');
+const algorithm = 'aes-256-cbc';
+const key = Buffer.from(process.env.ENCRYPTION_KEY, 'hex');
+const iv = Buffer.from(process.env.ENCRYPTION_IV, 'hex');
+
+function encrypt(text) {
+ let cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(key), iv);
+ let encrypted = cipher.update(text);
+ encrypted = Buffer.concat([encrypted, cipher.final()]);
+ return { iv: iv.toString('hex'), encryptedData: encrypted.toString('hex') };
+}
+
+function decrypt(text) {
+ let iv = Buffer.from(text.iv, 'hex');
+ let encryptedText = Buffer.from(text.encryptedData, 'hex');
+ let decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(key), iv);
+ let decrypted = decipher.update(encryptedText);
+ decrypted = Buffer.concat([decrypted, decipher.final()]);
+ return decrypted.toString();
+}
+
+module.exports = { getNewAccessToken };
+
+// var hw = encrypt("Some serious stuff")
+// console.log(hw)
+// console.log(decrypt(hw))
