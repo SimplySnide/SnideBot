@@ -23,7 +23,7 @@ module.exports = class XurV2 extends BaseCommand {
                 var json  = JSON.parse(this.responseText).Response;
                 var date_future = new Date(json.vendor.data.nextRefreshDate);
                 var date_now = new Date();
-                if(json.vendor.data.enabled) //Xur is active
+                if(json.vendor.data.canPurchase) //Xur is active
                 {
                     const xurEmbed = new MessageEmbed;
                     var itemSales = json.sales.data;
@@ -31,8 +31,11 @@ module.exports = class XurV2 extends BaseCommand {
                     get("https://paracausal.science/xur/current.json", //Credit to  https://twitter.com/nev_rtheless for providing Xur's location.
                     async function () {
                         var XurLocation  = JSON.parse(this.responseText);
-                        var location = (XurLocation.location).charAt(0).toUpperCase() + (XurLocation.location).slice(1);
-                        xurEmbed.addField("Location:", location + ", _" + XurLocation.locationName + "_");                    
+                        if(XurLocation != null)
+                        {
+                            var location = (XurLocation.location).charAt(0).toUpperCase() + (XurLocation.location).slice(1);
+                            xurEmbed.addField("Location:", location + ", _" + XurLocation.locationName + "_"); 
+                        }
                     });
         
                     get("https://www.bungie.net/Platform/Destiny2/Manifest/DestinyVendorDefinition/"+xurHash+"/",
@@ -64,7 +67,6 @@ module.exports = class XurV2 extends BaseCommand {
                         ])
                         
                         const highStat = 20;
-                        //[view](https://www.bungie.net"+ item.screenshot +")"
                         for (let index = 1; index < itemArray.length; index++) {
                             var armourStats = "\n";
                             var total = 0;
@@ -76,7 +78,6 @@ module.exports = class XurV2 extends BaseCommand {
                                     armourStats= armourStats + armourStatOrder[stat] + ": " + item[armourStatOrderIndex[stat]].value;
                                     //armourStats= armourStats + armourStatOrder[stat] + ": " + item[armourStatOrderIndex[stat]].value + ", ";
                                     //
-                                    //+ "\n"
                                     if(item[armourStatOrderIndex[stat]].value >= highStat){armourStats = armourStats + " \:star: \n"}
 
                                     else{armourStats = armourStats + "\n"}
@@ -108,6 +109,7 @@ module.exports = class XurV2 extends BaseCommand {
                 }
                 else    //Xur is not active
                 {
+                    msg.delete();
                     message.channel.send("Xur is currently restocking his inventory, he will be back in : " + timeDifferance(date_future, date_now));
                 }
             });
