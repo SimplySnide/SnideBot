@@ -132,8 +132,8 @@
     {
         "name": "Proving Ground",
         "commandname": ["provingground","pg"],
-        "champions":["Redacted"],
-        "shields":["Redacted"],
+        "champions":["Unstoppable <:Unstoppable:819343119425601556>", "Anti-Barrier <:AntiBarrier:819343119103426611>"],
+        "shields":["Void <:Void:819343119455748136> (Common)","Solar <:Solar:819343119391653918> (Uncommon)","Arc <:Arc:819343119384182814> (Rare)"],
         "hashIdentifier": "2103025315",
         "KeptModifiers": [0,1,2,12]
     }

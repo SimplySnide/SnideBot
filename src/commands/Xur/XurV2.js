@@ -23,7 +23,13 @@ module.exports = class XurV2 extends BaseCommand {
                 var json  = JSON.parse(this.responseText).Response;
                 var date_future = new Date(json.vendor.data.nextRefreshDate);
                 var date_now = new Date();
-                if(json.vendor.data.canPurchase) //Xur is active
+
+                var totalItemsSold = 0;
+                for (const iterator in json.sales.data) {
+                    totalItemsSold = totalItemsSold + 1;
+                }
+
+                if(totalItemsSold > 2) //Xur is active
                 {
                     const xurEmbed = new MessageEmbed;
                     var itemSales = json.sales.data;
@@ -110,7 +116,7 @@ module.exports = class XurV2 extends BaseCommand {
                 else    //Xur is not active
                 {
                     msg.delete();
-                    message.channel.send("Xur is currently restocking his inventory, he will be back in : " + timeDifferance(date_future, date_now));
+                    message.reply("Xur is currently restocking his inventory, he will be back in : " + timeDifferance(date_future, date_now));
                 }
             });
         });
