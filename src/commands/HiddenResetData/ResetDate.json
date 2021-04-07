@@ -12,9 +12,9 @@
         "challengeName":["The Core Four","Red Rover","Copies of Copies","Of All Trades"],
         "challengeGuide": [
             "(Fourth Encounter): Guardians must dunk all four cores before DPS phases.",
-            "(First Encounter): Do not send any Debuffs into airlocks/space.",
-            "(Second Encounter): Each guardian must do all three roles (Operator, Scanner, and Suppressor). Note: Players must complete a full phase with a buff for it to count.",
-            "(Third Encounter): All players have to be operator and shoot the two panels on lower level (This challenge requires 3 phases)."
+            "(First Encounter): All players have to be operator and shoot the two panels on lower level (This challenge requires 3 phases).",
+            "(Second Encounter): Do not send any Debuffs into airlocks/space.",
+            "(Third Encounter): Each guardian must do all three roles (Operator, Scanner, and Suppressor). Note: Players must complete a full phase with a buff for it to count."
         ],
         "cheatSheet": ["","https://i.imgur.com/84yy5CN.png","https://i.imgur.com/zCeDV3K.png","https://i.imgur.com/ysaWvBg.jpeg"],
         "defaultImage":"https://www.bungie.net/img/destiny_content/pgcr/europa-raid-deep-stone-crypt.jpg"
