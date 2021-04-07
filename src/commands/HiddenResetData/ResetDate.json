@@ -1,0 +1,70 @@
+{
+    "DeepStoneCrypt":
+    {
+        "lastDate": "2021-04-06T18:00:00+01:00",
+        "challengeIndex": 1,
+        "totalChallenges": 4,
+        "searchTerms": ["deep","deepstonecrypt","deepstone","exo"],
+
+        "icon":"https://www.bungie.net/common/destiny2_content/icons/8b1bfd1c1ce1cab51d23c78235a6e067.png",
+        "hasIcon":true,
+
+        "challengeName":["The Core Four","Red Rover","Copies of Copies","Of All Trades"],
+        "challengeGuide": [
+            "(Fourth Encounter): Guardians must dunk all four cores before DPS phases.",
+            "(First Encounter): Do not send any Debuffs into airlocks/space.",
+            "(Second Encounter): Each guardian must do all three roles (Operator, Scanner, and Suppressor). Note: Players must complete a full phase with a buff for it to count.",
+            "(Third Encounter): All players have to be operator and shoot the two panels on lower level (This challenge requires 3 phases)."
+        ],
+        "cheatSheet": ["","https://i.imgur.com/84yy5CN.png","https://i.imgur.com/zCeDV3K.png","https://i.imgur.com/ysaWvBg.jpeg"],
+        "defaultImage":"https://www.bungie.net/img/destiny_content/pgcr/europa-raid-deep-stone-crypt.jpg"
+    },
+    "GardenOfSalvation":
+    {
+        "lastDate": "2021-04-06T18:00:00+01:00",
+        "challengeIndex": 3,
+        "totalChallenges": 4,
+        "searchTerms": ["garden","gardenofsalvation","salvation","vex"],
+
+        "icon":"https://www.bungie.net/common/destiny2_content/icons/8b1bfd1c1ce1cab51d23c78235a6e067.png",
+        "hasIcon":true,
+
+        "challengeName":["Zero to One Hundred","Leftovers","A Link to the Chain","To the Top"],
+        "challengeGuide": [
+        "(Fourth Encounter – Sanctified Mind): Once you deposit motes, you have 10 seconds to fully fill the bank.",
+        "(First Encounter): Complete the first 2 rooms without killing specific Cyclopes.",
+        "(Second Encounter): All six fire team members must replenish enlightenment at the same time.",
+        "(Third Encounter): Always deposit Ten (x10) motes at a time to summon the boss."
+        ],
+        "cheatSheet": ["","https://i.imgur.com/OFMwjpz.jpg","https://i.imgur.com/qyVCSsm.jpg","https://i.imgur.com/qsZ9bCS.jpg"],
+        "defaultImage":"https://www.bungie.net/img/destiny_content/pgcr/raid_garden_of_salvation.jpg"
+    },
+    "LastWish":
+    {
+        "lastDate": "2021-04-06T18:00:00+01:00",
+        "challengeIndex": 0,
+        "totalChallenges": 5,
+        "searchTerms": ["last","lastwish","wish","taken"],
+
+        "icon":"https://www.bungie.net/common/destiny2_content/icons/8b1bfd1c1ce1cab51d23c78235a6e067.png",
+        "hasIcon":true,
+
+        "challengeName":["Strength of Memory","The Summoning Ritual","Which Witch","Forever Fight","Keep Out"],
+        "challengeGuide": [
+        "(Riven): Players must not shoot the same Riven eye more than once. \n*Remember to get the bounty from Hawthorne*",
+        "(Kalli): Activate all 9 plates, kill all Knights, and kill all Ogres in the middle before doing damage to Kalli. \n*Remember to get the bounty from Hawthorne*",
+        "(Shuro Chi): Do not get hit/take damage from Shuro Chi’s Arc Blast. \n*Remember to get the bounty from Hawthorne*",
+        "(Morgeth): Do not kill the small Ogres. \n*Remember to get the bounty from Hawthorne*",
+        "(Vault): Unlock the vault and keep Might of Riven Knights out of the center room. \n*Remember to get the bounty from Hawthorne*"
+        ],
+        "cheatSheet": ["","","","",""],
+        "defaultImage":"https://www.bungie.net/img/destiny_content/pgcr/raid_beanstalk.jpg"
+    },
+    "NightFallLoot":
+    {
+        "lastDate": "2021-04-06T18:00:00+01:00",
+        "challengeIndex": 0,
+        "totalChallenges": 3,
+        "searchTerms": []
+    }
+}
